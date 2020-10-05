@@ -1,7 +1,7 @@
 # Личный проект «YetiCave»
 
 * Студент: [Андрей Изюмов](https://up.htmlacademy.ru/php/12/user/181350).
-* Наставник: `Неизвестно`.
+* Наставник: [Артем Болтунов](https://htmlacademy.ru/profile/id1284691).
 
 ---
 
