@@ -43,6 +43,15 @@ $products = [
       'img-url' => 'img/lot-6.jpg',
   ],
 ];
+
+function setPriceFormat($number) {
+    $ceilNumber = ceil($number);
+    if($ceilNumber < 1000) {
+        return $ceilNumber . ' ₽';
+    } else {
+        return number_format($ceilNumber, 0, '.', ' ') . ' ₽';
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -70,7 +79,7 @@ $products = [
         <nav class="user-menu">
             <?php if ($is_auth == 1): ?>
                 <div class="user-menu__logged">
-                    <p><?=$user_name;?></p>
+                    <p><?=$user_name?></p>
                     <a class="user-menu__bets" href="pages/my-bets.html">Мои ставки</a>
                     <a class="user-menu__logout" href="#">Выход</a>
                 </div>
@@ -97,7 +106,7 @@ $products = [
         <ul class="promo__list">
             <?php foreach ($categories as $category): ?>
             <li class="promo__item promo__item--boards">
-                <a class="promo__link" href="pages/all-lots.html"><?=$category;?></a>
+                <a class="promo__link" href="pages/all-lots.html"><?=$category?></a>
             </li>
             <?php endforeach;?>
         </ul>
@@ -111,15 +120,15 @@ $products = [
             <?php foreach ($products as $product): ?>
             <li class="lots__item lot">
                 <div class="lot__image">
-                    <img src="<?= $product['img-url']; ?>" width="350" height="260" alt="">
+                    <img src="<?= $product['img-url'] ?>" width="350" height="260" alt="">
                 </div>
                 <div class="lot__info">
-                    <span class="lot__category"><?= $product['category']; ?></span>
-                    <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?= $product['name']; ?></a></h3>
+                    <span class="lot__category"><?= $product['category'] ?></span>
+                    <h3 class="lot__title"><a class="text-link" href="pages/lot.html"><?= $product['name'] ?></a></h3>
                     <div class="lot__state">
                         <div class="lot__rate">
                             <span class="lot__amount">Стартовая цена</span>
-                            <span class="lot__cost"><?= $product['price']; ?><b class="rub">р</b></span>
+                            <span class="lot__cost"><?= setPriceFormat($product['price']) ?></span>
                         </div>
                         <div class="lot__timer timer">
                             12:23
@@ -139,7 +148,7 @@ $products = [
             <?php foreach ($categories as $category): ?>
             <!--заполните этот список из массива категорий-->
             <li class="nav__item">
-                <a href="pages/all-lots.html"><?=$category;?></a>
+                <a href="pages/all-lots.html"><?=$category?></a>
             </li>
             <?php endforeach; ?>
         </ul>
