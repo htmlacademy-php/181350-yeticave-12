@@ -7,6 +7,14 @@ function setPriceFormat($number) {
         return number_format($ceilNumber, 0, '.', ' ') . ' ₽';
     }
 }
+function getExpiryTime($date) {
+    $curDate = date_create("now");
+    $endDate = date_create($date);
+    $diffDate = date_diff($curDate, $endDate);
+    $countHours = $diffDate->h + $diffDate->d * 24;
+    $countMinutes = $diffDate->i;
+    return [$countHours, $countMinutes];
+}
 ?>
 
     <main class="container">
@@ -27,7 +35,8 @@ function setPriceFormat($number) {
             </div>
             <ul class="lots__list">
                 <!--заполните этот список из массива с товарами-->
-                <?php foreach ($products as $product): ?>
+                <?php foreach ($products as $product):
+                    $dateDiff = getExpiryTime($product['end-date'])?>
                     <li class="lots__item lot">
                         <div class="lot__image">
                             <img src="<?= $product['img-url'] ?>" width="350" height="260" alt="">
@@ -40,8 +49,8 @@ function setPriceFormat($number) {
                                     <span class="lot__amount">Стартовая цена</span>
                                     <span class="lot__cost"><?= setPriceFormat($product['price']) ?></span>
                                 </div>
-                                <div class="lot__timer timer">
-                                    12:23
+                                <div class="lot__timer timer <?php if($dateDiff[0] < 1):?>timer--finishing<?php endif;?>">
+                                    <?= $dateDiff[0] . ':' . $dateDiff[1] ?>
                                 </div>
                             </div>
                         </div>
