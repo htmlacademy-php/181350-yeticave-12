@@ -21,8 +21,8 @@ insert INTO lot (create_date, name, description, picture, start_price,
 
 insert INTO lot (create_date, name, description, picture, start_price,
  end_date, bid_step, author, winner, category_id) VALUES
- ('2020-10-11 12 −00 −00', 'DC Ply Mens 2016/2017 Snowboard',
- 'img/lot-2.jpg', 159999, '2020-10-24', 10, select id from user where name = 'user1', 'Шаблон описания',
+ ('2020-10-11 12 −00 −00', 'DC Ply Mens 2016/2017 Snowboard', 'Шаблон описания',
+ 'img/lot-2.jpg', 159999, '2020-10-24', 10, select id from user where name = 'user1',
  select id from user where name = 'user2', select id from category where name = 'Доски и лыжи');
 
  insert INTO lot (create_date, name, description, picture, start_price,
