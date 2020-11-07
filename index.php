@@ -1,4 +1,22 @@
 <?php
+$con = mysqli_connect ("localhost", "root", "root", "yeticave");
+mysqli_set_charset($con, "utf8");
+
+$sqlLotsList = "SELECT name, start_price, picture, IF(max(amount) IS NULL, start_price, max(amount)) AS 'current_price', category, end_date
+FROM  (SELECT l.*, b.amount, c.name as 'category' from lot l
+        LEFT JOIN category c on l.category_id = c.id
+        LEFT JOIN bid b on l.id = b.lot_id
+        WHERE l.end_date > SYSDATE()
+ORDER BY l.create_date DESC, b.date DESC) tbl
+GROUP BY id";
+$lotsList = mysqli_query($con, $sqlLotsList);
+$lotsArray = mysqli_fetch_all($lotsList, MYSQLI_ASSOC);
+
+$sqlCategoriesList = "select * from category";
+$categoriesList = mysqli_query($con, $sqlCategoriesList);
+$categoriesArray = mysqli_fetch_all($categoriesList, MYSQLI_ASSOC);
+//print_r($categoriesArray);
+
 function include_template($name, array $data = []) {
     $name = 'templates/' . $name;
     $result = '';
@@ -72,18 +90,18 @@ $products = [
         'end-date' => '2020-10-28',
     ],
 ];
-$safeCategories = array_map("getSafeValue", $categories);
+$safeCategories = array_map('getSafeValue', $categories);
 $safeProducts = getSafeArray($products);
 $main = include_template('main.php', [
-    "categories" => $safeCategories,
-    "products" => $safeProducts,
+    'categories' => $categoriesArray,
+    'lots' => $lotsArray,
 ]);
 
 $layout = include_template('layout.php', [
     'user_name' => $user_name,
     'title' => $title,
     'main' => $main,
-    'categories' => $safeCategories,
+    'categories' => $categoriesArray,
 ]);
 
 print($layout);
