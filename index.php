@@ -9,13 +9,10 @@ FROM  (SELECT l.*, b.amount, c.name as 'category' from lot l
         WHERE l.end_date > SYSDATE()
 ORDER BY l.create_date DESC, b.date DESC) tbl
 GROUP BY id";
-$lotsList = mysqli_query($con, $sqlLotsList);
-$lotsArray = mysqli_fetch_all($lotsList, MYSQLI_ASSOC);
+$lotsArray = mysqli_fetch_all(mysqli_query($con, $sqlLotsList), MYSQLI_ASSOC);
 
 $sqlCategoriesList = "select * from category";
-$categoriesList = mysqli_query($con, $sqlCategoriesList);
-$categoriesArray = mysqli_fetch_all($categoriesList, MYSQLI_ASSOC);
-//print_r($categoriesArray);
+$categoriesArray = mysqli_fetch_all(mysqli_query($con, $sqlCategoriesList), MYSQLI_ASSOC);
 
 function include_template($name, array $data = []) {
     $name = 'templates/' . $name;
@@ -44,7 +41,8 @@ function getSafeArray($array) {
 };
 
 $title = 'Название страницы';
-$user_name = 'Андрей Изюмов'; // укажите здесь ваше имя
+$user_name = 'Андрей Изюмов';
+$params = $_GET;
 $categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
 $products = [
     [
@@ -95,11 +93,13 @@ $safeProducts = getSafeArray($products);
 $main = include_template('main.php', [
     'categories' => $categoriesArray,
     'lots' => $lotsArray,
+    'con' => $con,
 ]);
 
 $layout = include_template('layout.php', [
     'user_name' => $user_name,
     'title' => $title,
+    'params' => $params,
     'main' => $main,
     'categories' => $categoriesArray,
 ]);
