@@ -49,8 +49,7 @@ function getExpiryTime($date) {
                         <div class="lot__info">
                             <span class="lot__category"><?= $lot['category'] ?></span>
                             <h3 class="lot__title">
-                                <a class="text-link" <?php if(isset($idLot['id'])): ?>href="lot.php?id=<?= $idLot['id'] ?>"
-                                    <?php else: ?> href="pages/404.html" <?php endif;?>><?= $lotName ?></a>
+                                <a class="text-link" href="lot.php?id=<?= $idLot['id'] ?>"> <?= $lotName ?></a>
                             </h3>
                             <div class="lot__state">
                                 <div class="lot__rate">

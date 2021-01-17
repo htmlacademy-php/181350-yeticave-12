@@ -9,10 +9,12 @@ FROM  (SELECT l.*, b.amount, c.name as 'category' from lot l
         WHERE l.end_date > SYSDATE()
 ORDER BY l.create_date DESC, b.date DESC) tbl
 GROUP BY id";
-$lotsArray = mysqli_fetch_all(mysqli_query($con, $sqlLotsList), MYSQLI_ASSOC);
+$lotsObj = mysqli_query($con, $sqlLotsList);
+$lotsArray = mysqli_fetch_all($lotsObj, MYSQLI_ASSOC);
 
 $sqlCategoriesList = "select * from category";
-$categoriesArray = mysqli_fetch_all(mysqli_query($con, $sqlCategoriesList), MYSQLI_ASSOC);
+$sqlCategoriesObj = mysqli_query($con, $sqlCategoriesList);
+$categoriesArray = mysqli_fetch_all($sqlCategoriesObj, MYSQLI_ASSOC);
 
 function include_template($name, array $data = []) {
     $name = 'templates/' . $name;

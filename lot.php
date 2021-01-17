@@ -28,13 +28,19 @@ function getExpiryTime($date) {
 }
 
 $params = $_GET;
-$idLot = $params['id'];
+$idLot = (int)$params['id'];
+
+$paramIdList = "select * from lot where id = $idLot";
+$countRowsObj = mysqli_query($con, $paramIdList);
+$countRows = mysqli_num_rows ($countRowsObj);
 
 $sqlCategoriesList = "select * from category";
-$categoriesArray = mysqli_fetch_all(mysqli_query($con, $sqlCategoriesList), MYSQLI_ASSOC);
+$sqlCategoriesObj = mysqli_query($con, $sqlCategoriesList);
+$categoriesArray = mysqli_fetch_all($sqlCategoriesObj, MYSQLI_ASSOC);
 
 $sqlCategoryName = "select c.name from category c join lot l on l.category_id = c.id where l.id = $idLot";
-$categoryName = mysqli_fetch_assoc(mysqli_query($con, $sqlCategoryName));
+$sqlCategoryNameObj = mysqli_query($con, $sqlCategoryName);
+$categoryName = mysqli_fetch_assoc($sqlCategoryNameObj);
 
 $sqlCurrentPrice = "select IF(max(amount) IS NULL, start_price, max(amount)) AS 'current_price'
 FROM  (SELECT l.*, b.amount from lot l
@@ -43,10 +49,12 @@ FROM  (SELECT l.*, b.amount from lot l
         and l.id = $idLot
 ORDER BY l.create_date DESC, b.date DESC) tbl
 GROUP BY id";
-$currentPrice = mysqli_fetch_assoc(mysqli_query($con, $sqlCurrentPrice));
+$sqlCurrentPriceObj = mysqli_query($con, $sqlCurrentPrice);
+$currentPrice = mysqli_fetch_assoc($sqlCurrentPriceObj);
 
 $sqlLotInfo = "select * from lot where id = $idLot";
-$lotInfo = mysqli_fetch_assoc(mysqli_query($con, $sqlLotInfo));
+$sqlLotInfoObj = mysqli_query($con, $sqlLotInfo);
+$lotInfo = mysqli_fetch_assoc($sqlLotInfoObj);
 
 $title = 'Название страницы';
 $user_name = 'Андрей Изюмов';
@@ -60,11 +68,21 @@ $main = include_template('lot.php', [
     'lotName' => $lotInfo['name'],
 ]);
 
+
+$page404 = include_template('404.php');
 $layout = include_template('layout.php', [
 'user_name' => $user_name,
 'title' => $title,
 'main' => $main,
 'categories' => $categoriesArray,
+'con' => $con
 ]);
 
-print($layout);
+if ($countRows <= 0) {
+    print($layout);
+} else {
+    var_dump(http_response_code(404));
+    var_dump(http_response_code());
+    print($page404);
+}
+
