@@ -78,11 +78,10 @@ $layout = include_template('layout.php', [
 'con' => $con
 ]);
 
-if ($countRows <= 0) {
+if ($countRows > 0) {
     print($layout);
 } else {
     var_dump(http_response_code(404));
     var_dump(http_response_code());
     print($page404);
 }
-

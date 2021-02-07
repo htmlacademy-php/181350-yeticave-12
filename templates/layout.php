@@ -1,6 +1,5 @@
 <?php
 $is_auth = rand(0, 1);
-print($idLot);
 ?>
 
 <!DOCTYPE html>
@@ -108,4 +107,3 @@ print($idLot);
 <script src="../script.js"></script>
 </body>
 </html>
-
