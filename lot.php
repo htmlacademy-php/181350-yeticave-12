@@ -1,23 +1,8 @@
 <?php
+require_once('helpers.php');
 $con = mysqli_connect ("localhost", "root", "root", "yeticave");
 mysqli_set_charset($con, "utf8");
 
-function include_template($name, array $data = []) {
-    $name = 'templates/' . $name;
-    $result = '';
-
-    if (!is_readable($name)) {
-        return $result;
-    }
-
-    ob_start();
-    extract($data);
-    require $name;
-
-    $result = ob_get_clean();
-
-    return $result;
-}
 function getExpiryTime($date) {
     $curDate = date_create("now");
     $endDate = date_create($date);
@@ -66,6 +51,7 @@ $main = include_template('lot.php', [
     'currentPrice' => $currentPrice['current_price'],
     'minBid' => $currentPrice['current_price'] + $lotInfo['bid_step'],
     'lotName' => $lotInfo['name'],
+    'categories' => $categoriesArray,
 ]);
 
 
