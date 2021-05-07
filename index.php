@@ -1,4 +1,5 @@
 <?php
+require_once('helpers.php');
 $con = mysqli_connect ("localhost", "root", "root", "yeticave");
 mysqli_set_charset($con, "utf8");
 
@@ -16,22 +17,6 @@ $sqlCategoriesList = "select * from category";
 $sqlCategoriesObj = mysqli_query($con, $sqlCategoriesList);
 $categoriesArray = mysqli_fetch_all($sqlCategoriesObj, MYSQLI_ASSOC);
 
-function include_template($name, array $data = []) {
-    $name = 'templates/' . $name;
-    $result = '';
-
-    if (!is_readable($name)) {
-        return $result;
-    }
-
-    ob_start();
-    extract($data);
-    require $name;
-
-    $result = ob_get_clean();
-
-    return $result;
-};
 function getSafeValue($element) {
     return htmlspecialchars($element);
 };
